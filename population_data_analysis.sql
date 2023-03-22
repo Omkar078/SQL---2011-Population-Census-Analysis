@@ -34,5 +34,5 @@ ORDER BY AVG(Literacy)*100 DESC
 --Find out States with literacy rate greater than 90
 SELECT State, ROUND(AVG(Literacy)*100, 0) AS avg_literacy_rate FROM dbo.data1
 GROUP BY State 
-HAVING ROUND(AVG(Literacy)*100, 0)>90
+HAVING ROUND(AVG(Literacy)*100, 0)>9000
 ORDER BY AVG(Literacy)*100 DESC
