@@ -83,3 +83,6 @@ SELECT TOP 3  * FROM #top_3_states ORDER BY #top_3_states.Growth DESC ) a
 UNION
 SELECT * FROM(
 SELECT TOP 3  * FROM #bottom_3_states ORDER BY #bottom_3_states.Growth ASC) b
+
+--Literacy rate of state starting with letter M
+SELECT State, District, ROUND(Literacy, 0) FROM dbo.data1 where State LIKE 'M%'
