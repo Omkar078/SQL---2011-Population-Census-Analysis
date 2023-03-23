@@ -114,3 +114,26 @@ INNER JOIN
 population.dbo.data2 b
 ON a.District = b.District)c)d
 GROUP BY d.State
+
+--total literate people as per district
+
+SELECT c.District, ROUND(c.Literacy * c.Population, 0) AS literate_people 
+FROM
+(SELECT a.District, a.Literacy, b.Population 
+FROM population.dbo.data1 a
+INNER JOIN
+population.dbo.data2 b
+ON a.District = b.District)c
+
+--total literate people as per State
+
+SELECT d.State, SUM(d.literate_people) AS total_literate_people
+FROM
+(SELECT c.District, c.State, ROUND(c.Literacy * c.Population, 0) AS literate_people 
+FROM
+(SELECT a.State, a.District, a.Literacy, b.Population 
+FROM population.dbo.data1 a
+INNER JOIN
+population.dbo.data2 b
+ON a.District = b.District)c)d
+GROUP BY d.State
