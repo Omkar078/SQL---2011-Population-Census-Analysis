@@ -103,7 +103,8 @@ ON a.District = b.District)c
 
 --Number of males and females as per States
 
-SELECT
+SELECT d.State, sum(d.males) AS total_males, sum(d.females) AS total_females
+FROM
 (SELECT c.District, c.State, ROUND(c.Population * c.Sex_ratio / 1000,0) AS females, 
 ROUND(c.Population - (c.Population * c.Sex_ratio / 1000),0) AS males
 FROM
@@ -112,3 +113,4 @@ FROM population.dbo.data1 a
 INNER JOIN 
 population.dbo.data2 b
 ON a.District = b.District)c)d
+GROUP BY d.State
