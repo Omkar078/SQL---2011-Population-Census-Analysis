@@ -86,3 +86,18 @@ SELECT TOP 3  * FROM #bottom_3_states ORDER BY #bottom_3_states.Growth ASC) b
 
 --Literacy rate of state starting with letter M
 SELECT State, District, ROUND(Literacy, 0) FROM dbo.data1 where State LIKE 'M%'
+
+-- Number of Males and Females 
+
+SELECT * FROM population.dbo.data1;
+SELECT * FROM population.dbo.data2;
+
+
+SELECT c.District, c.State, ROUND(c.Population * c.Sex_ratio / 1000,0) AS num_females, 
+ROUND(c.Population - (c.Population * c.Sex_ratio / 1000),0) AS num_males
+FROM
+(SELECT a.District, a.State, a.Sex_ratio as Sex_ratio, b.Population
+FROM population.dbo.data1 a
+INNER JOIN 
+population.dbo.data2 b
+ON a.District = b.District)c
