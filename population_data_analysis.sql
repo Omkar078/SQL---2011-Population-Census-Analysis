@@ -207,5 +207,15 @@ FROM
 (SELECT SUM(area_km2) AS total_area FROM population.dbo.data2)n)q
 ON p.keyy = q.keyy)g
 
+-- Top 3 district from each state which has highest literacy rate
+
+SELECT a.*
+FROM
+(SELECT District, State, Literacy,
+RANK() OVER(PARTITION BY State ORDER BY Literacy DESC) AS rank
+FROM
+population.dbo.data1)a
+
+WHERE a.rank IN (1,2,3) ORDER BY State
 
 
