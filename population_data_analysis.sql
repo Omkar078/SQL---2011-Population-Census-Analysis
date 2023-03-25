@@ -163,4 +163,24 @@ population.dbo.data2 b
 ON a.District = b.District)c)d
 GROUP BY State
 
+--Total popualtion vs total Area
+
+SELECT p.*, q.* 
+FROM
+(SELECT '1' AS keyy, m.* 
+FROM
+(SELECT SUM(d.previous_census_population) AS total_previous_census_population, SUM(d.current_census_population) AS total_current_census_population
+FROM
+(SELECT c.District, c.State, ROUND(c.Population/(1 + c.Growth), 0) AS previous_census_population, c.Population AS current_census_population, c.Growth
+FROM
+(SELECT a.District, a.State, a.Growth, b.Population
+FROM population.dbo.data1 a
+INNER JOIN
+population.dbo.data2 b
+ON a.District = b.District)c)d)m)p
+INNER JOIN
+(SELECT '1' AS keyy, n.*
+FROM
+(SELECT SUM(area_km2) AS total_area FROM population.dbo.data2)n)q
+ON p.keyy = q.keyy
 
