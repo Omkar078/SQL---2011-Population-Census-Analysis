@@ -150,3 +150,17 @@ INNER JOIN
 population.dbo.data2 b
 ON a.District = b.District)c
 
+-- previous census population as Per State
+
+SELECT d.State, SUM(d.previous_census_population) AS previous_census_population, SUM(d.current_census_population) AS current_census_population
+FROM
+(SELECT c.District, c.State, ROUND(c.Population/(1 + c.Growth), 0) AS previous_census_population, c.Population AS current_census_population, c.Growth
+FROM
+(SELECT a.District, a.State, a.Growth, b.Population
+FROM population.dbo.data1 a
+INNER JOIN
+population.dbo.data2 b
+ON a.District = b.District)c)d
+GROUP BY State
+
+
