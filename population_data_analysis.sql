@@ -1,6 +1,6 @@
-SELECT * FROM dbo.data1;
+SELECT * FROM population.dbo.data1;
 
-SELECT * FROM dbo.data2;
+SELECT * FROM population.dbo.data2;
 
 -- counting rows in each table
 SELECT COUNT(*) FROM dbo.data1
@@ -139,3 +139,14 @@ INNER JOIN
 population.dbo.data2 b
 ON a.District = b.District)c)d
 GROUP BY State
+
+-- Previous census population as per district
+
+SELECT c.District, ROUND(c.Population/(1 + c.Growth), 0) AS previous_census_population, c.Population AS current_census_population, c.Growth
+FROM
+(SELECT a.District, a.State, a.Growth, b.Population
+FROM population.dbo.data1 a
+INNER JOIN
+population.dbo.data2 b
+ON a.District = b.District)c
+
