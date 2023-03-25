@@ -184,3 +184,28 @@ FROM
 (SELECT SUM(area_km2) AS total_area FROM population.dbo.data2)n)q
 ON p.keyy = q.keyy
 
+-- decrease in Area as per previous and Current population
+
+SELECT (g.total_area/g.total_previous_census_population) AS area_previous_census, (g.total_area/g.total_current_census_population) AS area_current_census
+FROM
+(SELECT p.*, q.total_area 
+FROM
+(SELECT '1' AS keyy, m.* 
+FROM
+(SELECT SUM(d.previous_census_population) AS total_previous_census_population, SUM(d.current_census_population) AS total_current_census_population
+FROM
+(SELECT c.District, c.State, ROUND(c.Population/(1 + c.Growth), 0) AS previous_census_population, c.Population AS current_census_population, c.Growth
+FROM
+(SELECT a.District, a.State, a.Growth, b.Population
+FROM population.dbo.data1 a
+INNER JOIN
+population.dbo.data2 b
+ON a.District = b.District)c)d)m)p
+INNER JOIN
+(SELECT '1' AS keyy, n.*
+FROM
+(SELECT SUM(area_km2) AS total_area FROM population.dbo.data2)n)q
+ON p.keyy = q.keyy)g
+
+
+
